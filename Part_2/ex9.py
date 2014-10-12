@@ -6,5 +6,3 @@ def nth_fib_lists(listA, listB, n):
         first_list = first_list + second_list
         second_list = temp
     return first_list
-
-print(nth_fib_lists([5, 6], [1, 2, 3], 10))
