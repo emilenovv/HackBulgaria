@@ -16,7 +16,7 @@ def magic_square(matrix):
         total = 0
         for j in range(len(matrix)):
             total += matrix[j][i]
-        if total != example_sum:  # # checks if the sum of the elements in colons equals the example_sum
+        if total != example_sum:  # checks if the sum of the elements in colons equals the example_sum
             return False
     total = 0
     for i in range(len(matrix)):

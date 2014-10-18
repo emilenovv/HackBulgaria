@@ -28,4 +28,4 @@ def goldbach_conjecture(n):
                 for j in prime_range(n):
                     if i + j == n and i <= j:
                         result.append((i, j))
-    return result
+    return result 
