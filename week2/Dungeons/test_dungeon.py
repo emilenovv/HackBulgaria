@@ -41,8 +41,19 @@ class DungeonTest(unittest.TestCase):
         self.summoners_rift.spawn("Emil", urgot)
         self.summoners_rift.move("Emil", "up")
         self.summoners_rift.move("Emil", "up")
+
+    def test_fight_in_dungeon(self):
+        jax = hero.Hero("Jax", 3000, "Killer")
+        urgot = orc.Orc("Emil", 2000, 1.3)
+        self.summoners_rift.spawn("Galin", jax)
+        self.summoners_rift.spawn("Emil", urgot)
+        self.summoners_rift.move("Galin", "right")
+        self.summoners_rift.move("Galin", "down")
+        self.summoners_rift.move("Galin", "down")
+        self.summoners_rift.move("Emil", "left")
+        self.summoners_rift.move("Galin", "down")
         self.summoners_rift.print_map()
-        print("Gun", jax.weapon.type)
+
 
 
 if __name__ == '__main__':

@@ -4,7 +4,7 @@ import random
 from hero import Hero
 from orc import Orc
 from weapon import Weapon
-from entity import Entity
+from fight import Fight
 
 
 class Dungeon:
@@ -26,7 +26,6 @@ class Dungeon:
         self.parse_weapons()
 
     def print_map(self):
-        print(self.content)
         for line in self.content:
             print(line)
         self.source.close()
@@ -65,13 +64,22 @@ class Dungeon:
                             return True
                     elif self.content[index_of_line][index_of_char] == "H":
                         if self.content[index_of_line - 1][index_of_char] == "O":
-                            pass
+                            self.start_fight()
+                            if self.start_fight() is not False:
+                                self.content[index_of_line][index_of_char] = "."
+                            if self.hero_player.is_alive() and not self.orc_player.is_alive():
+                                self.content[index_of_line - 1][index_of_char] = "H"
+                            return True
                     elif self.content[index_of_line][index_of_char] == "O":
                         if self.content[index_of_line - 1][index_of_char] == "H":
-                            pass
+                            self.start_fight()
+                            if self.start_fight() is not False:
+                                self.content[index_of_line][index_of_char] = "."
+                            if self.orc_player.is_alive() and not self.hero_player.is_alive():
+                                self.content[index_of_line - 1][index_of_char] = "O"
+                            return True
 
     def move_down(self, player_name, size_lines):
-        print("down")
         for index_of_line in range(len(self.content)):
             for index_of_char in range(len(self.content[index_of_line])):
                 if player_name == self.hero_player_name and self.content[index_of_line][index_of_char] in "H" or player_name == self.orc_player_name and self.content[index_of_line][index_of_char] in "O":
@@ -91,10 +99,20 @@ class Dungeon:
                         return True
                     elif self.content[index_of_line][index_of_char] == "H":
                         if self.content[index_of_line + 1][index_of_char] == "O":
-                            pass
+                            self.start_fight()
+                            if self.start_fight() is not False:
+                                self.content[index_of_line][index_of_char] = "."
+                            if self.hero_player.is_alive() and not self.orc_player.is_alive():
+                                self.content[index_of_line + 1][index_of_char] = "H"
+                            return True
                     elif self.content[index_of_line][index_of_char] == "O":
                         if self.content[index_of_line + 1][index_of_char] == "H":
-                            pass
+                            self.start_fight()
+                            if self.start_fight() is not False:
+                                self.content[index_of_line][index_of_char] = "."
+                            if self.orc_player.is_alive() and not self.hero_player.is_alive():
+                                self.content[index_of_line + 1][index_of_char] = "O"
+                            return True
 
     def move_left(self, player_name):
         for index_of_line in range(len(self.content)):
@@ -114,10 +132,20 @@ class Dungeon:
                         return True
                     elif self.content[index_of_line][index_of_char] == "H":
                         if self.content[index_of_line][index_of_char - 1] == "O":
-                            pass
+                            self.start_fight()
+                            if self.start_fight() is not False:
+                                self.content[index_of_line][index_of_char] = "."
+                            if self.hero_player.is_alive() and not self.orc_player.is_alive():
+                                self.content[index_of_line][index_of_char - 1] = "H"
+                            return True
                     elif self.content[index_of_line][index_of_char] == "O":
                         if self.content[index_of_line][index_of_char - 1] == "H":
-                            pass
+                            self.start_fight()
+                            if self.start_fight() is not False:
+                                self.content[index_of_line][index_of_char] = "."
+                            if self.orc_player.is_alive() and not self.hero_player.is_alive():
+                                self.content[index_of_line][index_of_char - 1] = "O"
+                            return True
 
     def move_right(self, player_name, size_cols):
         for index_of_line in range(len(self.content)):
@@ -139,10 +167,20 @@ class Dungeon:
                         return True
                     elif self.content[index_of_line][index_of_char] == "H":
                         if self.content[index_of_line][index_of_char + 1] == "O":
-                            pass
+                            self.start_fight()
+                            if self.start_fight() is not False:
+                                self.content[index_of_line][index_of_char] = "."
+                            if self.hero_player.is_alive() and not self.orc_player.is_alive():
+                                self.content[index_of_line][index_of_char + 1] = "H"
+                            return True
                     elif self.content[index_of_line][index_of_char] == "O":
                         if self.content[index_of_line][index_of_char + 1] == "H":
-                            pass
+                            self.start_fight()
+                            if self.start_fight() is not False:
+                                self.content[index_of_line][index_of_char] = "."
+                            if self.orc_player.is_alive() and not self.hero_player.is_alive():
+                                self.content[index_of_line][index_of_char + 1] = "O"
+                            return True
 
     def move(self, player_name, direction):
         size_lines = len(self.content)
@@ -173,9 +211,7 @@ class Dungeon:
             spawn_tuple = dots_list[random.randrange(0, len(dots_list))]
             spawn_line = spawn_tuple[0]
             spawn_col = spawn_tuple[1]
-            #self.content[spawn_line][spawn_col] = "W"
-            self.content[2][1] = "W"
-            self.content[2][9] = "W"
+            self.content[spawn_line][spawn_col] = "W"
         self.from_list_to_matrix()
 
     def end_of_map_finder(self):
@@ -189,12 +225,10 @@ class Dungeon:
     def parse_weapons(self):
         for i in range(len(self.weapons_file)):
             self.weapons_file[i] = self.weapons_file[i].split()
-            self.available_weapons.append(Weapon(self.weapons_file[i][0], self.weapons_file[i][1], self.weapons_file[i][2]))
-        print("Guns", self.weapons_file)
+            self.available_weapons.append(Weapon(self.weapons_file[i][0], float(self.weapons_file[i][1]), float(self.weapons_file[i][2])))
         return self.available_weapons
 
     def pick_up_weapon(self, entity):
-        print("Emil", len(self.available_weapons))
         if len(self.available_weapons) == 0:
             return "There are no more weapons"
         i = random.randrange(len(self.available_weapons))
@@ -207,3 +241,13 @@ class Dungeon:
         for index in range(len(self.content)):
             self.content[index] = "".join(self.content[index])
         return self.content
+
+    def start_fight(self):
+        arena = Fight(self.hero_player, self.orc_player)
+        arena.simulate_fight(self.orc_player, self.hero_player)
+        if not arena.simulate_fight(self.orc_player, self.hero_player):
+            return False
+        elif self.orc_player.is_alive() and not self.hero_player.is_alive():
+            print(self.orc_player_name, "won!")
+        elif self.hero_player.is_alive() and not self.orc_player.is_alive():
+            print(self.hero_player_name, "won!")
