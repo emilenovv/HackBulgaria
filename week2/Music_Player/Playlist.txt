@@ -1,0 +1,29 @@
+{
+    "Name": "My Playlist",
+    "Songs": [
+        {
+            "album": "Best",
+            "artist": "Manowar",
+            "bitrate": 64,
+            "length": 400,
+            "rating": 0,
+            "title": "Heart of Steel"
+        },
+        {
+            "album": "Album",
+            "artist": "Sia",
+            "bitrate": 128,
+            "length": 300,
+            "rating": 0,
+            "title": "Chandellier"
+        },
+        {
+            "album": "Blabla",
+            "artist": "Sia",
+            "bitrate": 192,
+            "length": 250,
+            "rating": 0,
+            "title": "My Love"
+        }
+    ]
+}
