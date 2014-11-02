@@ -75,10 +75,12 @@ class PlaylistTest(unittest.TestCase):
         self.good_playlist.songs.append(heart_of_steel)
         self.good_playlist.songs.append(chandellier)
         self.good_playlist.songs.append(sia_song)
-        self.good_playlist.save("Playlist.txt")
+        self.good_playlist.save("Playlist.json")
 
-    #def test_load(self):
-        #self.good_playlist.load("Playlist.txt")
+    def test_load(self):
+        a = playlist.Playlist("d")
+        a = a.load("emoemo.json")
+        print(a)
 
 
 
