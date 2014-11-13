@@ -29,7 +29,7 @@ def add_reservations(username, projection_id, row, col):
 def show_movies():
     conn = sqlite3.connect("movies.db")
     cursor = conn.cursor()
-    result = cursor.execute("SELECT * FROM movies")
+    result = cursor.execute("SELECT * FROM movies ORDER BY rating DESC")
     for row in result:
         print("[{}] - {} ({})".format(row[0], row[1], row[2]))
 
@@ -45,11 +45,12 @@ def show_projections(movie_id):
 def show_projections_by_date(movie_id, date):
     conn = sqlite3.connect("projections.db")
     cursor = conn.cursor()
-    movie = cursor.execute("SELECT  FROM projections")
+    #movie = cursor.execute("SELECT projections.movie_id, movies.id FROM projections INNER JOIN movies ON projections.movie_id = movie.id")
     result = cursor.execute("SELECT * FROM projections WHERE movie_id = ? AND date = ?", (movie_id, date))
     print("Projections for movie {} on date {}".format(movie_id, date))
     for row in result:
         print("[{}] - {} {} ({})".format(row[0], row[3], row[4], row[2]))
+
 
 def welcome():
     print("Hello! To add new movie - \"new_movie\",")
