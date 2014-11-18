@@ -1,6 +1,43 @@
 import sqlite3
 
 
+def create_movie_table():
+    conn = sqlite3.connect("movies.db")
+    cursor = conn.cursor()
+    cursor.execute('''CREATE TABLE IF NOT EXISTS
+        movies(id INTEGER PRIMARY KEY,
+                name TEXT,
+                rating REAL)
+                ''')
+    conn.commit()
+
+
+def create_projections_table():
+    conn = sqlite3.connect("projections.db")
+    cursor = conn.cursor()
+    cursor.execute('''CREATE TABLE IF NOT EXISTS
+        projections(id INTEGER PRIMARY KEY,
+                movie_id INT,
+                type TEXT,
+                date TEXT,
+                time TEXT)
+                ''')
+    conn.commit()
+
+
+def create_reservations_table():
+    conn = sqlite3.connect("reservations.db")
+    cursor = conn.cursor()
+    cursor.execute('''CREATE TABLE IF NOT EXISTS
+        reservations(id INTEGER PRIMARY KEY,
+                username TEXT,
+                projection_id INT,
+                row INT,
+                col INT)
+                ''')
+    conn.commit()
+
+
 def add_movie(new_name, new_rating):
     conn = sqlite3.connect("movies.db")
     cursor = conn.cursor()

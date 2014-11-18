@@ -31,7 +31,6 @@ class Projection:
             ix += 1
 
     def load_reservations(self, id):
-        print(id)
         result = Projection.cursor.execute("SELECT row, col FROM reservations WHERE projection_id = ?", (id, ))
         for row in result:
             self.seats[row[0] - 1][row[1] - 1] = "X"

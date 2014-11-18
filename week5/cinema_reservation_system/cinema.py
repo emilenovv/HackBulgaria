@@ -189,6 +189,9 @@ class Cinema:
 
 
 def main():
+    manage_tables.create_movie_table()
+    manage_tables.create_projections_table()
+    manage_tables.create_reservations_table()
     cinema = Cinema()
     cinema.choose()
 
