@@ -70,6 +70,5 @@ class TicTacToeTests(unittest.TestCase):
         self.assertIn(move, corners)
 
 
-
 if __name__ == '__main__':
     unittest.main()

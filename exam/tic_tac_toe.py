@@ -86,6 +86,7 @@ class TicTacToe:
         return False
 
     def computer_chooses_across_corner(self):
+        print("ne")
         if self.board[0] == self.computer_symbol and self.is_place_free(8):
             self.free_positions.remove(8)
             return 8
@@ -113,7 +114,6 @@ class TicTacToe:
                 self.free_positions.remove(0)
                 return 0
             elif self.is_place_free(8):
-                print("ne")
                 self.free_positions.remove(8)
                 return 2
         return False
@@ -131,20 +131,24 @@ class TicTacToe:
         return move
 
     def computer_choose_position(self, num_computer_symbols):
-        if self.computer_tries_to_win() is not False:
-            return self.computer_tries_to_win()
-        elif self.computer_tries_to_block() is not False:
-            return self.computer_tries_to_block()
-        elif self.computer_chooses_corner() is not False:
-            print("corner")
-            return self.computer_chooses_corner()
-        elif num_computer_symbols == 1 and self.computer_chooses_across_corner() is not False:
-            print("tuka ne")
-            return self.computer_chooses_across_corner()
-        elif num_computer_symbols == 2 and self.computer_chooses_third_corner() is not False:
-            return self.computer_chooses_third_corner()
-        elif self.computer_chooses_center() is not False:
-            return self.computer_chooses_center()
+        move = self.computer_tries_to_win()
+        if move is not False:
+            return move
+        move = self.computer_tries_to_block()
+        if move is not False:
+            return move
+        move = self.computer_chooses_corner()
+        if move is not False:
+            return move
+        move = self.computer_chooses_across_corner()
+        if num_computer_symbols == 1 and move is not False:
+            return move
+        move = self.computer_chooses_third_corner()
+        if num_computer_symbols == 2 and move is not False:
+            return move
+        move = self.computer_chooses_center()
+        if move is not False:
+            return move
         else:
             return self.computer_chooses_side()
 
