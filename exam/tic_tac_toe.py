@@ -55,7 +55,7 @@ class TicTacToe:
             return choice(possible_moves)
         return False
 
-    def computer_try_to_win(self):
+    def computer_tries_to_win(self):
         for i in range(9):
             if self.is_place_free(i):
                 self.board[i] = self.computer_symbol
@@ -66,7 +66,7 @@ class TicTacToe:
                 self.board[i] = " "
         return False
 
-    def computer_try_to_block(self):
+    def computer_tries_to_block(self):
         for i in range(9):
             if self.is_place_free(i):
                 self.board[i] = self.player_symbol
@@ -77,57 +77,76 @@ class TicTacToe:
                 self.board[i] = " "
         return False
 
-    def computer_choose_position(self, num_computer_symbols):
+    def computer_chooses_corner(self):
         corners = [0, 2, 6, 8]
         move = self.choose_move_from_list(corners)
         if move is not False:
             self.free_positions.remove(move)
             return move
+        return False
 
-        #opitva se da sloji simvol v protivopolojniq ygyl
-        elif num_computer_symbols == 1:
-            if self.board[0] == self.computer_symbol and self.is_place_free(8):
-                self.free_positions.remove(8)
-                return 8
-            elif self.board[8] == self.computer_symbol and self.is_place_free(0):
-                self.free_positions.remove(0)
-                return 0
-            elif self.board[2] == self.computer_symbol and self.is_place_free(6):
+    def computer_chooses_across_corner(self):
+        if self.board[0] == self.computer_symbol and self.is_place_free(8):
+            self.free_positions.remove(8)
+            return 8
+        elif self.board[8] == self.computer_symbol and self.is_place_free(0):
+            self.free_positions.remove(0)
+            return 0
+        elif self.board[2] == self.computer_symbol and self.is_place_free(6):
+            self.free_positions.remove(6)
+            return 6
+        elif self.board[6] == self.computer_symbol and self.is_place_free(2):
+            self.free_positions.remove(2)
+            return 2
+        return False
+
+    def computer_chooses_third_corner(self):
+        if self.board[0] == self.computer_symbol and self.board[8] == self.computer_symbol:
+            if self.is_place_free(6):
                 self.free_positions.remove(6)
                 return 6
-            elif self.board[6] == self.computer_symbol and self.is_place_free(2):
+            elif self.is_place_free(2):
                 self.free_positions.remove(2)
                 return 2
+        elif self.board[6] == self.computer_symbol and self.board[2] == self.computer_symbol:
+            if self.is_place_free(0):
+                self.free_positions.remove(0)
+                return 0
+            elif self.is_place_free(8):
+                print("ne")
+                self.free_positions.remove(8)
+                return 2
+        return False
 
-        elif num_computer_symbols == 2:
-            if self.board[0] == self.computer_symbol and self.board[8] == self.computer_symbol:
-                if self.is_place_free(6):
-                    self.free_positions.remove(6)
-                    return 6
-                elif self.is_place_free(2):
-                    self.free_positions.remove(2)
-                    return 2
-            elif self.board[6] == self.computer_symbol and self.board[2] == self.computer_symbol:
-                if self.is_place_free(0):
-                    self.free_positions.remove(0)
-                    return 0
-                elif self.is_place_free(8):
-                    self.free_positions.remove(8)
-                    return 2
+    def computer_chooses_center(self):
+        if self.is_place_free(4):
+            self.free_positions.remove(4)
+            return 4
+        return False
 
-            elif self.is_place_free(4):
-                self.free_positions.remove(4)
-                return 4
+    def computer_chooses_side(self):
+        sides = [1, 3, 5, 7]
+        move = self.choose_move_from_list(sides)
+        self.free_positions.remove(move)
+        return move
 
-            move = self.choose_move_from_list(corners)
-            if move is not False:
-                self.free_positions.remove(move)
-                return move
-
-            sides = [1, 3, 5, 7]
-            move = self.choose_move_from_list(sides)
-            self.free_positions.remove(move)
-            return move
+    def computer_choose_position(self, num_computer_symbols):
+        if self.computer_tries_to_win() is not False:
+            return self.computer_tries_to_win()
+        elif self.computer_tries_to_block() is not False:
+            return self.computer_tries_to_block()
+        elif self.computer_chooses_corner() is not False:
+            print("corner")
+            return self.computer_chooses_corner()
+        elif num_computer_symbols == 1 and self.computer_chooses_across_corner() is not False:
+            print("tuka ne")
+            return self.computer_chooses_across_corner()
+        elif num_computer_symbols == 2 and self.computer_chooses_third_corner() is not False:
+            return self.computer_chooses_third_corner()
+        elif self.computer_chooses_center() is not False:
+            return self.computer_chooses_center()
+        else:
+            return self.computer_chooses_side()
 
     def make_move(self, move, symbol):
         self.board[move] = symbol
@@ -164,6 +183,7 @@ def main():
         print("You will go first!")
         player_turn = True
         while True:
+            print(tictactoe.free_positions)
             if player_turn is True:
                 print("Player turn")
                 tictactoe.draw_board()
@@ -185,6 +205,7 @@ def main():
             else:
                 print("Computer turn")
                 move = tictactoe.computer_choose_position(num_computer_symbols)
+                print("Computer move", move)
                 tictactoe.make_move(move, tictactoe.computer_symbol)
                 num_computer_symbols += 1
                 if tictactoe.is_winner(tictactoe.computer_symbol):
