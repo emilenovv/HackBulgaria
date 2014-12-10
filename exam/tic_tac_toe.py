@@ -86,7 +86,6 @@ class TicTacToe:
         return False
 
     def computer_chooses_across_corner(self):
-        print("ne")
         if self.board[0] == self.computer_symbol and self.is_place_free(8):
             self.free_positions.remove(8)
             return 8
@@ -209,7 +208,6 @@ def main():
             else:
                 print("Computer turn")
                 move = tictactoe.computer_choose_position(num_computer_symbols)
-                print("Computer move", move)
                 tictactoe.make_move(move, tictactoe.computer_symbol)
                 num_computer_symbols += 1
                 if tictactoe.is_winner(tictactoe.computer_symbol):
